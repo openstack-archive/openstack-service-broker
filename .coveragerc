@@ -1,0 +1,6 @@
+[run]
+branch = True
+source = openstack_service_broker
+
+[report]
+ignore_errors = True

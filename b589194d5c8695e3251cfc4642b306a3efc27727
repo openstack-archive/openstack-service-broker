@@ -1,0 +1,8 @@
+Code-Review+2: Artem Goncharov <artem.goncharov@gmail.com>
+Workflow+1: Artem Goncharov <artem.goncharov@gmail.com>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Fri, 29 Jun 2018 18:10:48 +0000
+Reviewed-on: https://review.openstack.org/579230
+Project: openstack/openstack-service-broker
+Branch: refs/heads/master

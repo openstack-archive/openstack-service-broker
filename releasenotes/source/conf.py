@@ -57,7 +57,7 @@ copyright = u'2017, OpenStack Developers'
 
 # openstackdocstheme options
 repository_name = 'openstack/openstack-service-broker'
-bug_project = ''
+bug_project = '1038'
 bug_tag = ''
 html_last_updated_fmt = '%Y-%m-%d %H:%M'
 

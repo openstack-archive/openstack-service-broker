@@ -12,7 +12,7 @@ Note that this is a hard requirement.
 * Free software: Apache license
 * Documentation: https://docs.openstack.org/openstack-service-broker/latest
 * Source: https://git.openstack.org/cgit/openstack/openstack-service-broker
-* Bugs: https://storyboard.openstack.org/
+* Bugs: https://storyboard.openstack.org/#!/project/1038
 
 --------
 

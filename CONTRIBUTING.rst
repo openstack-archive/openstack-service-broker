@@ -12,4 +12,4 @@ submitted for review via the Gerrit tool:
 
 Pull requests submitted through GitHub will be ignored.
 
-Bugs should be filed on Storyboard https://storyboard.openstack.org/
+Bugs should be filed on Storyboard https://storyboard.openstack.org/#!/project/1038

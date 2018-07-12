@@ -1,0 +1,102 @@
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+---
+##############################################################################
+## Manage Openstack KeyPair using an Ansible Playbook Bundle.
+##############################################################################
+
+- name: "Update last operation"
+  asb_last_operation:
+    description: "0%: Starting"
+  when: in_cluster
+
+- name: 'Set facts'
+  set_fact:
+    cluster: '{{ "openshift" if "openshift" in lookup("k8s", cluster_info="version") else "kubernetes" }}'
+
+- when: apb_action == 'provision'
+  block:
+
+    - name: cloud-config
+      k8s:
+        state: 'present'
+        definition:
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: "openstack-os-client-config-clouds"
+            namespace: "{{ namespace }}"
+          data:
+            clouds.yaml: "{{ os_client_config_clouds }}"
+
+    - name: cloud-config-secure
+      k8s:
+        state: 'present'
+        definition:
+          apiVersion: v1
+          kind: Secret
+          metadata:
+            name: "openstack-os-client-config-secure"
+            namespace: "{{ namespace }}"
+          stringData:
+            secure.yaml: "{{ os_client_config_secure }}"
+
+    - name: encode provision credentials
+      asb_encode_binding:
+        fields:
+          dummy: dummy
+          os_client_config_clouds: "{{ os_client_config_clouds }}"
+          os_client_config_secure: "{{ os_client_config_secure }}"
+          os_client_config_clouds_ref: "openstack-os-client-config-clouds"
+          os_client_config_secure_ref: "openstack-os-client-config-secure"
+
+# NOTE: openstacksdk is not accepting configuration in string, only file
+# openstack modules are capable to accept `auth` dict, but this would
+# mean, that we need to parse os-client-config with Ansible
+- name: flush os_client_config
+  include_tasks: flush_cfg.yml
+  vars:
+    os_client_config_clouds: "{{ _apb_provision_creds.os_client_config_clouds }}"
+    os_client_config_secure: "{{ _apb_provision_creds.os_client_config_secure }}"
+  when: (apb_action == 'bind') or (apb_action == 'unbind')
+
+- when: apb_action == 'bind'
+  block:
+    - name: create the keypair
+      os_keypair:
+        state: "present"
+        cloud: "{{ cloud_name }}"
+        name: "{{ keypair_name }}"
+      register: keypair
+
+    - name: encode bind credentials
+      asb_encode_binding:
+        fields:
+          public_key: "{{ keypair.key.public_key }}"
+          private_key: "{{ keypair.key.private_key }}"
+          name: "{{ keypair.key.name }}"
+          id: "{{ keypair.key.id }}"
+          fingerprint: "{{ keypair.key.fingerprint }}"
+          _key: "{{ keypair.key }}"
+
+- when: apb_action == 'unbind'
+  block:
+    - name: delete the keypair
+      os_keypair:
+        state: "absent"
+        cloud: "{{ cloud_name }}"
+        name: "{{ keypair_name }}"
+
+- name: "Update last operation"
+  asb_last_operation:
+    description: "100%: Done"
+  when: in_cluster

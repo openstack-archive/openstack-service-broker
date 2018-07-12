@@ -1,0 +1,62 @@
+FROM ansibleplaybookbundle/apb-base
+
+RUN yum -y install    gcc \
+#                      libffi-devel \
+                      python-devel \
+                      python-pip \
+                      python-setuptools \
+    && yum clean all
+# Install openstacksdk into the image
+# RUN git clone https://git.openstack.org/openstack/openstacksdk
+
+RUN pip install -U setuptools --user && \
+    pip install -U openstacksdk --user
+
+LABEL "com.redhat.apb.spec"=\
+"IyBMaWNlbnNlZCB1bmRlciB0aGUgQXBhY2hlIExpY2Vuc2UsIFZlcnNpb24gMi4wICh0aGUgIkxp\
+Y2Vuc2UiKTsgeW91IG1heQojIG5vdCB1c2UgdGhpcyBmaWxlIGV4Y2VwdCBpbiBjb21wbGlhbmNl\
+IHdpdGggdGhlIExpY2Vuc2UuIFlvdSBtYXkgb2J0YWluCiMgYSBjb3B5IG9mIHRoZSBMaWNlbnNl\
+IGF0CiMKIyAgICAgIGh0dHA6Ly93d3cuYXBhY2hlLm9yZy9saWNlbnNlcy9MSUNFTlNFLTIuMAoj\
+CiMgVW5sZXNzIHJlcXVpcmVkIGJ5IGFwcGxpY2FibGUgbGF3IG9yIGFncmVlZCB0byBpbiB3cml0\
+aW5nLCBzb2Z0d2FyZQojIGRpc3RyaWJ1dGVkIHVuZGVyIHRoZSBMaWNlbnNlIGlzIGRpc3RyaWJ1\
+dGVkIG9uIGFuICJBUyBJUyIgQkFTSVMsIFdJVEhPVVQKIyBXQVJSQU5USUVTIE9SIENPTkRJVElP\
+TlMgT0YgQU5ZIEtJTkQsIGVpdGhlciBleHByZXNzIG9yIGltcGxpZWQuIFNlZSB0aGUKIyBMaWNl\
+bnNlIGZvciB0aGUgc3BlY2lmaWMgbGFuZ3VhZ2UgZ292ZXJuaW5nIHBlcm1pc3Npb25zIGFuZCBs\
+aW1pdGF0aW9ucwojIHVuZGVyIHRoZSBMaWNlbnNlLgotLS0KdmVyc2lvbjogMS4wCm5hbWU6IG9w\
+ZW5zdGFjay1rZXlwYWlyLWFwYgpkZXNjcmlwdGlvbjogT3BlbnN0YWNrIEtleVBhaXIxCmJpbmRh\
+YmxlOiBUcnVlCmFzeW5jOiBvcHRpb25hbAp0YWdzOgogIC0gT3BlbnN0YWNrCm1ldGFkYXRhOgog\
+IGRvY3VtZW50YXRpb25Vcmw6IGh0dHBzOi8vb3BlbnN0YWNrLm9yZwogIGRpc3BsYXlOYW1lOiBP\
+cGVuc3RhY2sgS2V5UGFpciAoQVBCKQogIGxvbmdEZXNjcmlwdGlvbjogVGhpcyBkZXBsb3lzIEtl\
+eVBhaXIgc2VjcmV0cyBpbnRvIHRoZSBPcGVuc2hpZnQvSzgKICBpbWFnZVVybDogaHR0cHM6Ly93\
+d3cub3BlbnN0YWNrLm9yZy9hc3NldHMvb3BlbnN0YWNrLWxvZ28vMjAxNlIvT3BlblN0YWNrLUxv\
+Z28tTWFyay5zdmcKICBkZXBlbmRlbmNpZXM6IFtdCnBsYW5zOgogIC0gbmFtZTogZGV2CiAgICBk\
+ZXNjcmlwdGlvbjogVGhpcyBkZXZlbG9wbWVudCBwbGFuIGRlcGxveXMgb3BlbnN0YWNrLWtleXBh\
+aXItYXBiCiAgICBmcmVlOiBUcnVlCiAgICBtZXRhZGF0YToKICAgICAgZGlzcGxheU5hbWU6IERl\
+dmVsb3BtZW50CiAgICBwYXJhbWV0ZXJzOgogICAgICAtIG5hbWU6IG9zX2NsaWVudF9jb25maWdf\
+Y2xvdWRzCiAgICAgICAgdGl0bGU6IG9zX2NsaWVudF9jb25maWcKICAgICAgICB0eXBlOiBzdHJp\
+bmcKICAgICAgICBkaXNwbGF5X3R5cGU6IHRleHRhcmVhCiAgICAgICAgZGVmYXVsdDogfCsKICAg\
+ICAgICAgIGNsb3VkczoKICAgICAgICAgICAgb3RjOgogICAgICAgICAgICAgIGF1dGg6CiAgICAg\
+ICAgICAgICAgICBhdXRoX3VybDogaHR0cHM6Ly9pYW0uZXUtZGUub3RjLnQtc3lzdGVtcy5jb206\
+NDQzL3YzCiAgICAgICAgICAgICAgICBwcm9qZWN0X25hbWU6IGV1LWRlICNyZXF1aXJlZCwgc2lu\
+Y2Ugb3RoZXJ3aXNlIHNvbWUgQVBJcyBhcmUgbm90IHdvcmtpbmcKICAgICAgICAgICAgICAgIHVz\
+ZXJfZG9tYWluX25hbWU6IE9UQzAwMDAwMDAwMDAxMDAwMDAwNDQ4CiAgICAgICAgICAgICAgaW50\
+ZXJmYWNlOiBwdWJsaWMKICAgICAgICAgICAgICBpZGVudGl0eV9hcGlfdmVyc2lvbjogMwogICAg\
+ICAtIG5hbWU6IG9zX2NsaWVudF9jb25maWdfc2VjdXJlCiAgICAgICAgdGl0bGU6IG9zX2NsaWVu\
+dF9jb25maWdfc2VjdXJlCiAgICAgICAgdHlwZTogc3RyaW5nCiAgICAgICAgZGlzcGxheV90eXBl\
+OiB0ZXh0YXJlYQogICAgICAgIGRpc3BsYXlfZ3JvdXA6IHNlY3JldHMKICAgICAgICBkZWZhdWx0\
+OiB8KwogICAgICAgICAgY2xvdWRzOgogICAgICAgICAgICBvdGM6CiAgICAgICAgICAgICAgYXV0\
+aDoKICAgICAgICAgICAgICAgIHVzZXJuYW1lOiBBcnRlbUdvbmNoYXJvdgogICAgICAgICAgICAg\
+ICAgcGFzc3dvcmQ6IElseUV5YWFpbW0hOAogICAgYmluZF9wYXJhbWV0ZXJzOgogICAgICAtIG5h\
+bWU6IGNsb3VkX25hbWUKICAgICAgICB0aXRsZTogY2xvdWQsIGNvbmZpZ3VyZWQgaW4gdGhlIHBy\
+ZXZpb3VzbHkgZ2l2ZW4gb3NfY2xpZW50X2NvbmZpZwogICAgICAgIHR5cGU6IHN0cmluZwogICAg\
+ICAgIHJlcXVpcmVkOiB0cnVlCiAgICAgIC0gbmFtZToga2V5cGFpcl9uYW1lCiAgICAgICAgdGl0\
+bGU6IE5hbWUgb2YgdGhlIEtleVBhaXIKICAgICAgICB0eXBlOiBzdHJpbmcKICAgICAgICByZXF1\
+aXJlZDogdHJ1ZQo="
+
+ENV BUNDLE_DEBUG=true
+
+ADD playbooks /opt/apb/actions
+ADD . /opt/ansible/roles/openstack-keypair-apb
+RUN chmod -R g=u /opt/{ansible,apb}
+
+USER apb

@@ -1,0 +1,65 @@
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+---
+version: 1.0
+name: openstack-keypair-apb
+description: Openstack KeyPair1
+bindable: True
+async: optional
+tags:
+  - Openstack
+metadata:
+  documentationUrl: https://openstack.org
+  displayName: Openstack KeyPair (APB)
+  longDescription: This deploys KeyPair secrets into the Openshift/K8
+  imageUrl: https://www.openstack.org/assets/openstack-logo/2016R/OpenStack-Logo-Mark.svg
+  dependencies: []
+plans:
+  - name: dev
+    description: This development plan deploys openstack-keypair-apb
+    free: True
+    metadata:
+      displayName: Development
+    parameters:
+      - name: os_client_config_clouds
+        title: os_client_config
+        type: string
+        display_type: textarea
+        default: |+
+          clouds:
+            otc:
+              auth:
+                auth_url: https://iam.eu-de.otc.t-systems.com:443/v3
+                project_name: eu-de 
+                user_domain_name: my_domain
+              interface: public
+              identity_api_version: 3
+      - name: os_client_config_secure
+        title: os_client_config_secure
+        type: string
+        display_type: textarea
+        display_group: secrets
+        default: |+
+          clouds:
+            otc:
+              auth:
+                username: my_user_name
+                password: my_password
+    bind_parameters:
+      - name: cloud_name
+        title: cloud, configured in the previously given os_client_config
+        type: string
+        required: true
+      - name: keypair_name
+        title: Name of the KeyPair
+        type: string
+        required: true

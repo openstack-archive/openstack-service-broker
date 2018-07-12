@@ -1,0 +1,25 @@
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+---
+
+# Defaults for values we could expect from a broker
+_apb_plan_id: default
+_apb_service_class_id: 0
+_apb_service_instance_id: 0
+
+app_name: "openstack-keypair-{{ _apb_service_instance_id }}"
+namespace: "{{ lookup('env','NAMESPACE') | default('openstack', true) }}"
+
+
+os_client_config_dest: '~/.config/openstack'
+os_client_config_clouds_filename: "clouds.yaml"
+os_client_config_secure_filename: "secure.yaml"

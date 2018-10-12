@@ -1,0 +1,9 @@
+Code-Review+2: Lingxian Kong <anlin.kong@gmail.com>
+Code-Review+2: Zane Bitter <zbitter@redhat.com>
+Workflow+1: Zane Bitter <zbitter@redhat.com>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Fri, 12 Oct 2018 20:53:09 +0000
+Reviewed-on: https://review.openstack.org/609792
+Project: openstack/openstack-service-broker
+Branch: refs/heads/master
